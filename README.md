@@ -173,4 +173,9 @@ instagram-analytics-demo/
 
 ---
 
-Built by [Moises Vivas](https://linkedin.com/in/moisesvivas)
+## Author
+
+**Moises Vivas** — AI Application Developer · FastAPI · React · Claude API · Toronto, Canada
+
+- GitHub: [github.com/moisesvivass](https://github.com/moisesvivass)
+- LinkedIn: [linkedin.com/in/moisesvivas](https://linkedin.com/in/moisesvivas)
