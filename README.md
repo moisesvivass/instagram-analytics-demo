@@ -175,7 +175,7 @@ instagram-analytics-demo/
 
 ## Author
 
-**Moises Vivas** — AI Application Developer · FastAPI · React · Claude API · Toronto, Canada
+**Moises Vivas** — AI Application Developer · Python · FastAPI · React · PostgreSQL · Claude API · Toronto, Canada
 
 - GitHub: [github.com/moisesvivass](https://github.com/moisesvivass)
 - LinkedIn: [linkedin.com/in/moisesvivas](https://linkedin.com/in/moisesvivas)
