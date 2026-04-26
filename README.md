@@ -19,7 +19,7 @@ Replaces manual Instagram tracking with automated data collection, AI-generated 
 | **Overview** | 5 KPIs with week-over-week deltas, reach chart, follower transition tracker, daily AI spark |
 | **Posts** | Full post grid with AI analysis per post — engagement scoring, pattern detection |
 | **AI Insights** | Claude-generated weekly brief: what's working, what's not, actionable strategy |
-| **Action Board** | AI-generated 7-post weekly content plan with format types and retailer anchors |
+| **Action Board** | AI-generated 7-post weekly content plan with format types, retailer anchors, and weekly memory to avoid repeating content angles |
 | **HQ** | Pure SQL analytics — no AI, raw metrics for power users |
 
 ---
@@ -30,7 +30,7 @@ Replaces manual Instagram tracking with automated data collection, AI-generated 
 |---|---|
 | **Backend** | FastAPI 0.115 + Python 3.12 + SQLAlchemy 2.0 + PostgreSQL |
 | **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS v4 + shadcn/ui |
-| **AI** | Claude Haiku (post analysis, daily spark) + Claude Sonnet (insights, action board, ranking) |
+| **AI** | Claude Haiku (post analysis, daily spark) + Claude Sonnet 4.6 (insights, action board, ranking) |
 | **Data** | Instagram Graph API v21.0 |
 | **Scheduler** | APScheduler — automated data refresh every 30 min |
 | **Auth** | HTTP Basic Auth with brute-force protection (15 failures / 10 min → 10 min block) |
@@ -54,6 +54,8 @@ Instagram Graph API
 
 - All external API calls go through the backend — never from the frontend
 - Claude API is rate-limited (3 generations/week for major features, results cached in DB)
+- Action Board uses **prompt caching** (`cache_control: ephemeral`) — static rules cached, dynamic post data injected fresh. Calls 2 and 3 of the week get a cache hit (~70% token savings)
+- Action Board retains **weekly memory** — last 2 weekly plans are injected as context to avoid repeating the same content angles
 - `USE_MOCK_DATA=true` serves synthetic data — no real API keys needed to run locally
 
 ---
