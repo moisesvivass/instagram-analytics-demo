@@ -76,11 +76,33 @@ def _cache_to_dict(record: ActionBoardCache, calls_used: int) -> dict:
     }
 
 
+def _get_history(db: Session) -> list[dict]:
+    """Return the last 2 real ActionBoard plans (oldest first) for memory context."""
+    rows = (
+        db.query(ActionBoardCache)
+        .filter(ActionBoardCache.source == "real")
+        .order_by(ActionBoardCache.generated_at.desc())
+        .limit(2)
+        .all()
+    )
+    history = []
+    for row in reversed(rows):  # oldest first so labels read "two weeks ago → last week"
+        try:
+            history.append({
+                "generated_at": row.generated_at.isoformat(),
+                "weekly_plan":  json.loads(row.items),
+            })
+        except json.JSONDecodeError:
+            pass
+    return history
+
+
 async def _build_and_save(db: Session, count_before: int) -> dict:
     """Call Claude, persist result, return serialised dict with updated count."""
     api_posts = await fetch_posts(db=db)
     all_posts = _get_merged_posts(api_posts, db)
-    result    = await generate_action_board(all_posts)
+    history   = _get_history(db)
+    result    = await generate_action_board(all_posts, history=history)
 
     record = ActionBoardCache(
         items=json.dumps(result.get("weekly_plan", [])),
