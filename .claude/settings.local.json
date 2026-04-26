@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(psql:*)",
+      "Bash(railway up:*)",
+      "Bash(railway logs:*)",
+      "Bash(railway variables:*)",
+      "Bash(railway status:*)",
+      "Bash(vercel deploy:*)",
+      "Bash(.venv/Scripts/python -m py_compile:*)",
+      "Bash(.venv/Scripts/python -m compileall:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check_secrets.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
