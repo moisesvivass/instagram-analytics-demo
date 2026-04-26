@@ -21,6 +21,7 @@ Replaces manual Instagram tracking with automated data collection, AI-generated 
 | **AI Insights** | Claude-generated weekly brief: what's working, what's not, actionable strategy |
 | **Action Board** | AI-generated 7-post weekly content plan with format types, retailer anchors, and weekly memory to avoid repeating content angles |
 | **HQ** | Pure SQL analytics — no AI, raw metrics for power users |
+| **Deals** | Brand partnership tracker — log deals, track status, monitor confirmed and pending revenue |
 
 ---
 
