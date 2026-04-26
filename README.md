@@ -3,7 +3,7 @@
 A full-stack AI-powered analytics dashboard for Instagram content creators.
 
 > **This is a demo version with synthetic data.**
-> The original is a **private production tool** built for a real content creator with 26K+ Instagram followers (50K+ across all platforms). It is actively used weekly to drive content strategy and is being expanded to cover YouTube and TikTok. This repository exists for portfolio purposes only — the real product is not open source.
+> The original is a **private production tool** built for a real content creator with 26K+ Instagram followers (50K+ across all platforms). It is actively used weekly to drive content strategy and is being expanded to cover YouTube and TikTok. This repository exists for portfolio purposes only, the real product is not open source.
 
 **Live demo:** [instagram-demo-gold.vercel.app](https://instagram-demo-gold.vercel.app)  
 *(No login required — auto-authenticates on load)*
