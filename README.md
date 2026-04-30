@@ -107,10 +107,14 @@ VITE_DEMO_PASSWORD=demo2026
 This project was built entirely using **[Claude Code](https://claude.ai/code)** as the primary development environment — an agentic coding workflow that goes well beyond autocomplete.
 
 ### CLAUDE.md
-A `CLAUDE.md` file lives at the root of every project. Claude Code reads it at the start of every session. It contains the full stack reference, file map, security rules, deploy instructions, Claude API usage map, known technical debt, and coding conventions. This eliminates context re-explanation across sessions and keeps every decision grounded in the actual project state.
+A `CLAUDE.md` file at the project root serves as the persistent session context for Claude Code. It is read at the start of every session and contains the full stack reference, architecture decisions, signal contract, cost budget, prompt design rules, security constraints, known tech debt, and coding conventions. This eliminates context re-explanation across sessions and keeps every decision grounded in the actual project state.
+
+`CLAUDE.md` files are typically kept out of version control — they often contain private production data (real account metrics, API keys, creator details). **In this demo repo we committed it intentionally:** the file contains no sensitive data, and it documents the engineering decisions behind the project in a way that is genuinely useful for anyone reading the code.
+
+→ **[Read the CLAUDE.md](./CLAUDE.md)**
 
 ### Custom Skills (Slash Commands)
-Three reusable skills were built for this project:
+Three reusable skills were built for this project and stored in `.claude/commands/`:
 
 | Skill | What it does |
 |---|---|
@@ -118,15 +122,17 @@ Three reusable skills were built for this project:
 | `/new-feature` | Checks git state, suggests a conventional-commit branch name, creates and switches to it |
 | `/reset-rate-limit` | Shifts this week's AI generation timestamps back 8 days so the weekly counter resets without deleting cached content |
 
+Skills are reusable across sessions and composable — `/deploy` itself calls a git check before touching Railway or Vercel, preventing accidental deploys with uncommitted changes.
+
 ### Prompt Tester Sub-Agent
-A custom sub-agent was built to test Claude prompt modifications safely before committing:
+A custom sub-agent was built to safely iterate on Claude prompts before committing changes:
 
 - Pulls real post data directly from the production database
-- Runs the **current prompt (baseline)** and the **modified prompt** against the same data
+- Runs the **current prompt (baseline)** and the **modified prompt** against the same dataset
 - Produces a structured comparison report with a `SHIP IT / NEEDS WORK / REVERT` recommendation
-- Never modifies source files or consumes a weekly rate limit token
+- Never modifies source files or consumes a weekly rate-limit token
 
-This made it safe to iterate on the Action Board and AI Insights prompts across multiple versions without risking the production weekly generation budget.
+This made it possible to iterate on the Action Board and AI Insights prompts across multiple versions without risking the weekly generation budget or deploying a regression.
 
 ---
 
