@@ -213,7 +213,17 @@ Rejected: blanket "carousels don't work." Reason: insufficient n with proper for
 **SlowAPI default_limits removed, pool_recycle added**
 Removed global SlowAPI limits — they caused unbounded `MemoryStorage` growth and Railway RAM creep toward OOM. Per-endpoint limits remain.
 Added `pool_recycle=1800` to `create_engine` to avoid stale Postgres connections after Railway worker restarts.
-Rejected: `--limit-max-requests`. Reason: Railway health checks restart the worker every 2h, which silently kills APScheduler.
+
+**`--limit-max-requests 500` added (overrides earlier rejection — 2026-05-13)**
+Previous decision rejected this on the grounds that worker recycles would silently kill APScheduler. Reconsidered for this codebase specifically: this is a **portfolio demo**, not a production tool. The two scheduler jobs are:
+- Daily Instagram refresh at 12:00 UTC — missing one day occasionally is acceptable; the data exists to look real to recruiters, not to drive operational decisions.
+- Weekly token check on Mondays at 09:00 UTC — only matters every ~60 days when the long-lived token nears expiry, and the failure mode is a logged warning, not data loss.
+
+Worker recycles re-register both jobs in `lifespan`, so the schedule resumes on the next worker. The only risk is the cron firing during the exact window of a recycle, which is rare and acceptable for a demo.
+
+Trade-off accepted: paying ~$0.30/month less in Railway memory beats theoretical 99% scheduler reliability for a service that nobody uses operationally.
+
+This decision does **not** propagate to `yamiyordii-command-center`, where the scheduler drives a real user's content workflow.
 
 **Auto-login on the demo, password screen on production**
 The public demo skips the login screen — recruiters open the link and land on the dashboard immediately. The same code in production gates behind HTTP Basic Auth + brute-force protection. Toggle is environment-driven, not a code fork.
